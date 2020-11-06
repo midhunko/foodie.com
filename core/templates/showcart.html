@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Cart{% endblock %}
+{% block content %}
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Foodie.com</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        {% if not user.is_authenticated %}
+        <a class="nav-link" href="{% url 'log_in' %}">Login</a>
+        {% endif %}
+      </li>
+      <li class="nav-item">
+        {% if user.is_authenticated %}
+        <a class="nav-link" href="">Hi {{user}}</a>
+        {% endif %}
+      </li>
+      <li class="nav-item">
+        {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'log_out' %}">Logout</a>
+        {% endif %}
+      </li>
+    </ul>
+  </div>
+</nav>
+{% for pastas in pasta %}
+  <div class="card mb-3" style="max-width: 2160px;">
+    <div class="row no-gutters">
+      <div class="col-md-4">
+        <!--<img src="/media/{{ pastas.image }}" class="card-img" alt="...">-->
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ pastas.pasta }}</h5>
+          <a class="nav-link active" href="{% url 'delete_item' pastas.id %}">Delete from Cart</a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+
+{% if pasta %}
+<a class="nav-link active" href="{% url 'checkout_view' %}">Check Out</a>
+{% endif %}
+
+{% if not pasta %}
+<a class="nav-link active" href="{% url 'home' %}">Cart is empty, Go Home</a>
+{% endif %}
+
+{% endblock %}
